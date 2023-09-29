@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "chest-tournament-app"
+version = "0.1.0"
+description = ""
+authors = ["mumz0 <parisot.sa@gmail.com>"]
+readme = "README.md"
+packages = [{include = "chest_tournament_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tinydb = "^4.8.0"
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
