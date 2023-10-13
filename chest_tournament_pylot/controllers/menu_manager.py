@@ -1,5 +1,5 @@
-from database_abstraction.models.player import Player
-from database_abstraction.models.tournament import Tournament
+from chest_tournament_pylot.database_abstraction.models.player import Player
+from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
 from chest_tournament_pylot.views.view import View
 
 

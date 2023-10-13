@@ -1,5 +1,5 @@
-from database_abstraction.models.database_helper import *
-from database_abstraction.models.tournament import Tournament
+from chest_tournament_pylot.database_abstraction.models.database_helper import *
+from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
 
 class TournamentHelper():
     
@@ -23,3 +23,5 @@ class TournamentHelper():
                 break 
         return is_already_exist
     
+
+

@@ -1,5 +1,5 @@
 from tinydb import Query
-from database_abstraction.models.database_helper import *
+from chest_tournament_pylot.database_abstraction.models.database_helper import *
 
 class PlayerHelper():
 

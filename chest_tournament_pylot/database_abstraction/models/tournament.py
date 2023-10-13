@@ -2,7 +2,7 @@ import os
 from tinydb import Query, TinyDB
 import json
 
-from database_abstraction.models.database_helper import *
+# from chest_tournament_pylot.database_abstraction.models.database_helper import *
 
 class Tournament:
     
@@ -12,7 +12,7 @@ class Tournament:
         self.start_date = start_date
         self.description = description
         self.end_date = end_date
-        self.round_number = rounds_number
+        self.rounds_number = rounds_number
         self.tournament_number = tournament_number
         self.players = players
         self.round_lst = round_lst
@@ -33,7 +33,8 @@ class Tournament:
             "end_date": None,
             "tournament_number": None,
             "round_number": 4,
-            "players": self.players
+            "players": self.players,
+            "round_lst": self.round_lst,
             }
         
     
@@ -45,7 +46,10 @@ class Tournament:
             start_date=data['start_date'],
             description=data['description'],
             end_date = None,
-            tournament_number = None
+            tournament_number = None,
+            rounds_number = 4,
+            players = data['players'],
+            round_lst = data["round_lst"]
             )
 
 
