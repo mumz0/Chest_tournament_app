@@ -1,9 +1,9 @@
-from database_abstraction.models.player import Player
-from database_abstraction.models.tournament import Tournament
+from chest_tournament_pylot.database_abstraction.models.player import Player
+from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
 from chest_tournament_pylot.views.view import View
-from database_abstraction.models.database_helper import *
-from database_abstraction.helpers.player_helper import PlayerHelper
-from database_abstraction.helpers.tounament_helper import TournamentHelper
+from chest_tournament_pylot.database_abstraction.models.database_helper import *
+from chest_tournament_pylot.database_abstraction.helpers.player_helper import PlayerHelper
+from chest_tournament_pylot.database_abstraction.helpers.tounament_helper import TournamentHelper
 
 
 class PlayerManager:
@@ -83,8 +83,7 @@ class PlayerManager:
                 "text": player["first_name"] + player["last_name"] + player["birth_date"]
             }
         response = self.view_obj.display_options(options, ascii_art)
-        print("jkhajlikghrezkljgrekjzgrkjl", tournament_id)
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", response)
+
         if response != "0":
             Tournament_helper_obj = TournamentHelper()
             Tournament_helper_obj.add_player_to_tournament(response, self.main_controller.player_db, tournament_id, self.main_controller.tournament_db)

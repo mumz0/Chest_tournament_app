@@ -1,7 +1,8 @@
-from database_abstraction.helpers.round_helper import RoundHelper
-from database_abstraction.models.round import Round
-from database_abstraction.models.tournament import Tournament
-from database_abstraction.models.database_helper import *
+from chest_tournament_pylot.database_abstraction.helpers.round_helper import RoundHelper
+from chest_tournament_pylot.database_abstraction.helpers.match_helper import MatchHelper
+from chest_tournament_pylot.database_abstraction.models.round import Round
+from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
+from chest_tournament_pylot.database_abstraction.models.database_helper import *
 from chest_tournament_pylot.views.view import View
 
 
@@ -34,7 +35,7 @@ class TournamentManager:
             tournament_form_dict["description"],
             )
 
-        tournament.save()
+        save(self.tournament.serialize(tournament), self.main_controller.tournament_db)
         self.main_controller.menu_manager.tournaments_manager()
 
     
@@ -68,9 +69,6 @@ class TournamentManager:
     def tournament_management(self, tournament_id= None):
 
         tournament = pull_database_obj(tournament_id, self.main_controller.tournament_db)
-        self.tournament.deserialize(tournament)
-        print(self.tournament)
-
         self.tournament = self.tournament.deserialize(tournament)
 
         ascii_art = """
@@ -87,7 +85,7 @@ class TournamentManager:
             "3": {"value": self.show_all_tournaments, "text": "Retour"}
         }
         response = self.view_obj.display_options(options, ascii_art)
-        if response == "2":
+        if response == "2" or response == "1":
             options[response]["value"](tournament_id)
         else:
             options[response]["value"]()
@@ -97,16 +95,59 @@ class TournamentManager:
         print("JE REPRENDS LE TOURNOI EN COURS")
 
 
-    def start_tournament(self):
-        print(self.tournament.start_date)
+    def start_tournament(self, tournament_id):
+        for index in range(1, 2):
+            self.round_process(index, tournament_id)
+
+
+    def round_process(self, index, tournament_id):
+
         round_helper_obj = RoundHelper()
         time_snapshot = round_helper_obj.set_round_time()
-        self.round.get_start_timestamp = time_snapshot
-        print(self.round.get_start_timestamp)
-        for round_number in self.tournament.rounds_number:
-            self.round_process()
 
-
-    def round_process(self):
         player_lst = self.tournament.players
-        print(player_lst)
+        match_helper_obj = MatchHelper()
+        match_lst = match_helper_obj.create_match_lst(player_lst)
+
+        round_obj = Round(number = str(index), start_timestamp = time_snapshot, end_timestamp = None, match_lst = match_lst)
+        round = self.round.serialize(round_obj)
+        self.tournament.round_lst.append(round)
+        update_tournament_round(str(tournament_id), self.tournament.round_lst, self.main_controller.tournament_db)
+
+
+
+        # print(self.round.match_lst)
+        player_in_match = []
+        for match in round_obj.match_lst:
+            for player in match:
+                player_obj = pull_database_obj(int(player['player_id']), self.main_controller.player_db)
+                player_in_match.append(player_obj)
+                print(player_in_match)
+                print(match)
+            result_match = self.result_match_page(match, player_in_match[0], player_in_match[1])
+            player_in_match.clear()
+            round_obj.match_lst.append(result_match)
+            update_match(str(tournament_id), index, round_obj.match_lst, self.main_controller.tournament_db)
+
+    
+
+    def result_match_page(self, match, player_obj_1, player_obj_2):
+        ascii_art = """
+      __  ___      __       __                                 ____      
+     /  |/  /___ _/ /______/ /_  _____   ________  _______  __/ / /______
+    / /|_/ / __ `/ __/ ___/ __ \/ ___/  / ___/ _ \/ ___/ / / / / __/ ___/
+   / /  / / /_/ / /_/ /__/ / / (__  )  / /  /  __(__  ) /_/ / / /_(__  ) 
+  /_/  /_/\__,_/\__/\___/_/ /_/____/  /_/   \___/____/\__,_/_/\__/____/  
+                                                                         
+"""
+        response = self.view_obj.display_result_match(player_obj_1, player_obj_2, ascii_art)
+        if response == "1":
+            match[0]['result'] = 1
+            match[1]['result'] = 0
+        elif response == "2":
+            match[0]['result'] = 0
+            match[1]['result'] = 1
+        else:
+            match[0]['result'] = 0.5
+            match[1]['result'] = 0.5
+        return match
