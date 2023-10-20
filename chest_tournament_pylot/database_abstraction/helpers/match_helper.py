@@ -24,7 +24,7 @@ class MatchHelper:
         if player_to_pair_with == None:
             return player_lst[0]['player_id'], player_lst[1]['player_id']
         else:
-            return player_lst[0]['player_id'], player_to_pair_with[1]['player_id']   
+            return player_lst[0]['player_id'], player_to_pair_with['player_id']   
 
 
     def choose_player(self, index, player_lst):

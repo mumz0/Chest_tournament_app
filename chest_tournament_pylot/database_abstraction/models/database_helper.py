@@ -6,7 +6,6 @@ from chest_tournament_pylot.database_abstraction.models.tournament import Tourna
 
 def save(obj, db):
     db.insert(obj)
-    db.close()
 
 def pull_database_obj_lst(db):
     print(db.all())
@@ -23,24 +22,36 @@ def update_obj(obj, db, attribute_value, attribute):
 
 
 # Fonction pour mettre à jour round_lst
-def update_tournament_round(tournament_id, new_round_lst, db):
+def update_tournament_round(tournament_id, round_serialized, db):
+
     tournament = db.get(doc_id = tournament_id)
-    for round in new_round_lst:
-        round_exist = False
-        for round_db in tournament['round_lst']:
-            if round['number'] == round_db['number']:
-                round_exist = True
-                continue
-        if round_exist is False:
-            tournament['round_lst'].append(round)
-    db.update(tournament)
+    if len(tournament['round_lst']) == 0:
+        tournament['round_lst'].append(round_serialized)
+        db.update(tournament)
+    else:
+        for round in tournament['round_lst']:
+            round_found = False
+            if round['number'] == round_serialized['number']:
+                round_found = True
+        if round_found is False:
+            tournament['round_lst'].append(round_serialized)
+            db.update(tournament)
 
 
 
 # Fonction pour mettre à jour round_lst
-def update_match(tournament_id, round_number, new_match_lst, db):
+def update_match_and_player_score(tournament_id, round_number, new_match_lst, db):
+    print('IN update_match_and_player_score')
+    print("tournament_id", tournament_id)
     tournament = db.get(doc_id = tournament_id)
-    for round in tournament['round_lst']:
-        if round['number'] == round_number:
-            tournament['round_lst'].round['match_lst'] = new_match_lst
+    tournament['round_lst'][round_number - 1]['match_lst'] = new_match_lst
+
+    for player in tournament['players']:
+        for match in new_match_lst:
+            if player['player_id'] == match[0]['player_id']:
+                player['score'] += match[0]['result']
+                break
+            if player['player_id'] == match[1]['player_id']:
+                player['score'] += match[1]['result']
+                break
     db.update(tournament)
