@@ -70,7 +70,7 @@ class TournamentManager:
 
         tournament = pull_database_obj(tournament_id, self.main_controller.tournament_db)
         self.tournament = self.tournament.deserialize(tournament)
-
+        
         ascii_art = """
      ______          __  _                    __         __                               _ 
     / ____/__  _____/ /_(_)___  ____     ____/ /_  __   / /_____  __  ___________  ____  (_)
@@ -96,12 +96,11 @@ class TournamentManager:
 
 
     def start_tournament(self, tournament_id):
-        for index in range(1, 2):
+        for index in range(1, 5):
             self.round_process(index, tournament_id)
 
 
     def round_process(self, index, tournament_id):
-
         round_helper_obj = RoundHelper()
         time_snapshot = round_helper_obj.set_round_time()
 
@@ -110,28 +109,31 @@ class TournamentManager:
         match_lst = match_helper_obj.create_match_lst(player_lst)
 
         round_obj = Round(number = str(index), start_timestamp = time_snapshot, end_timestamp = None, match_lst = match_lst)
-        round = self.round.serialize(round_obj)
-        self.tournament.round_lst.append(round)
-        update_tournament_round(str(tournament_id), self.tournament.round_lst, self.main_controller.tournament_db)
+        self.tournament.round_lst.append(round_obj)
+        round_serialized = self.round.serialize(self.tournament.round_lst[index - 1])
+        print("index", index, 'self.tournament.round_lst[index]', self.tournament.round_lst[index - 1].number, "index - 1", index - 1)
 
-
-
-        # print(self.round.match_lst)
+        print('before')
+        update_tournament_round(tournament_id, round_serialized, self.main_controller.tournament_db)
+        print('after')
+        
         player_in_match = []
         for match in round_obj.match_lst:
             for player in match:
                 player_obj = pull_database_obj(int(player['player_id']), self.main_controller.player_db)
                 player_in_match.append(player_obj)
                 print(player_in_match)
-                print(match)
-            result_match = self.result_match_page(match, player_in_match[0], player_in_match[1])
+            match = self.result_match_page(index, match, player_in_match[0], player_in_match[1])
             player_in_match.clear()
-            round_obj.match_lst.append(result_match)
-            update_match(str(tournament_id), index, round_obj.match_lst, self.main_controller.tournament_db)
+        print('round_serialized', round_serialized)        
+        update_match_and_player_score(str(tournament_id), index, round_obj.match_lst, self.main_controller.tournament_db)
+
+
+        
 
     
 
-    def result_match_page(self, match, player_obj_1, player_obj_2):
+    def result_match_page(self, index_round, match, player_obj_1, player_obj_2):
         ascii_art = """
       __  ___      __       __                                 ____      
      /  |/  /___ _/ /______/ /_  _____   ________  _______  __/ / /______
@@ -140,7 +142,7 @@ class TournamentManager:
   /_/  /_/\__,_/\__/\___/_/ /_/____/  /_/   \___/____/\__,_/_/\__/____/  
                                                                          
 """
-        response = self.view_obj.display_result_match(player_obj_1, player_obj_2, ascii_art)
+        response = self.view_obj.display_result_match(index_round, player_obj_1, player_obj_2, ascii_art)
         if response == "1":
             match[0]['result'] = 1
             match[1]['result'] = 0

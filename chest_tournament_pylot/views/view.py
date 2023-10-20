@@ -92,10 +92,12 @@ class View:
 
     
 
-    def display_result_match(self, player_obj_1, player_obj_2, ascii_art):
+    def display_result_match(self, index_round, player_obj_1, player_obj_2, ascii_art):
         # print(player_obj_1['last_name'], player_obj_1['first_name'], " VS ", player_obj_2['last_name'], player_obj_2['first_name'])
         # os.system('cls')
         print(ascii_art)
+        print('ROUND ', index_round, ":")
+        print("")
         print("1: ", player_obj_1['last_name'], player_obj_1['first_name'])
         print("2: ", player_obj_2['last_name'], player_obj_2['first_name'])
         print("3: ", "Match null")
