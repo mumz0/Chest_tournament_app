@@ -23,7 +23,7 @@ def update_obj(obj, db, attribute_value, attribute):
 
 # Fonction pour mettre à jour round_lst
 def update_tournament_round(tournament_id, round_serialized, db):
-
+   
     tournament = db.get(doc_id = tournament_id)
     if len(tournament['round_lst']) == 0:
         tournament['round_lst'].append(round_serialized)

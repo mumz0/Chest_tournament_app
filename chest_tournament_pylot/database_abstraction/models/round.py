@@ -21,3 +21,13 @@ class Round:
             "end_timestamp": self.end_timestamp,
             "match_lst": self.match_lst
             }
+    
+    @classmethod
+    def deserialize(cls, data):
+        return cls(
+            number=data['number'],
+            start_timestamp=data['start_timestamp'],
+            end_timestamp=data['end_timestamp'],
+            match_lst=data['match_lst'],
+            )
+    

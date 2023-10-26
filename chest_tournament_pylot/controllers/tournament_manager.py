@@ -1,5 +1,6 @@
 from chest_tournament_pylot.database_abstraction.helpers.round_helper import RoundHelper
 from chest_tournament_pylot.database_abstraction.helpers.match_helper import MatchHelper
+from chest_tournament_pylot.database_abstraction.helpers.tounament_helper import TournamentHelper
 from chest_tournament_pylot.database_abstraction.models.round import Round
 from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
 from chest_tournament_pylot.database_abstraction.models.database_helper import *
@@ -53,11 +54,12 @@ class TournamentManager:
         back = {"0": {"value":self.main_controller.menu_manager.tournaments_manager, "text": "Retour"}}
         options = {}
         for tournament in tournaments_lst:
-            options[str(tournament.doc_id)] = {
-                "name": tournament["name"],
-                "location": tournament["location"],
-                "date": tournament["start_date"],
-            }
+            if tournament["round_lst"] != []:
+                options[str(tournament.doc_id)] = {
+                    "name": tournament["name"],
+                    "location": tournament["location"],
+                    "date": tournament["start_date"],
+                }
         response = self.view_obj.display_tournaments_list(options, ascii_art, back)
         if response == "0":
             self.main_controller.menu_manager.tournaments_manager()
@@ -97,37 +99,37 @@ class TournamentManager:
 
     def start_tournament(self, tournament_id):
         for index in range(1, 5):
+            print("round", index)
+            # print("round_lst", self.tournament.round_lst)
             self.round_process(index, tournament_id)
-
+        # self.tournament.end_date = TournamentHelper.set_tournament_end_date()
 
     def round_process(self, index, tournament_id):
         round_helper_obj = RoundHelper()
-        time_snapshot = round_helper_obj.set_round_time()
-
-        player_lst = self.tournament.players
         match_helper_obj = MatchHelper()
-        match_lst = match_helper_obj.create_match_lst(player_lst)
+        round_obj = Round(
+            number = str(index), 
+            start_timestamp = round_helper_obj.set_round_time(), 
+            end_timestamp = None, 
+            match_lst = match_helper_obj.create_match_lst(self.tournament.players, self.tournament.round_lst))
 
-        round_obj = Round(number = str(index), start_timestamp = time_snapshot, end_timestamp = None, match_lst = match_lst)
         self.tournament.round_lst.append(round_obj)
-        round_serialized = self.round.serialize(self.tournament.round_lst[index - 1])
-        print("index", index, 'self.tournament.round_lst[index]', self.tournament.round_lst[index - 1].number, "index - 1", index - 1)
-
-        print('before')
-        update_tournament_round(tournament_id, round_serialized, self.main_controller.tournament_db)
-        print('after')
+        print('self.tournament.round_lst', self.tournament.round_lst)
         
+        round_serialized = self.round.serialize(round_obj)
+        update_tournament_round(tournament_id, round_serialized, self.main_controller.tournament_db)
+
         player_in_match = []
         for match in round_obj.match_lst:
             for player in match:
                 player_obj = pull_database_obj(int(player['player_id']), self.main_controller.player_db)
                 player_in_match.append(player_obj)
-                print(player_in_match)
+                # print(player_in_match)
             match = self.result_match_page(index, match, player_in_match[0], player_in_match[1])
             player_in_match.clear()
-        print('round_serialized', round_serialized)        
+        round_obj.end_timestamp = round_helper_obj.set_round_time()
         update_match_and_player_score(str(tournament_id), index, round_obj.match_lst, self.main_controller.tournament_db)
-
+        
 
         
 
@@ -153,3 +155,12 @@ class TournamentManager:
             match[0]['result'] = 0.5
             match[1]['result'] = 0.5
         return match
+
+    
+    def get_started_tournament_len(self):
+        tournament_lst = pull_database_obj_lst(self.main_controller.tournament_db)
+        started_tournament_lst = []
+        for tournament in tournament_lst:
+            if tournament["round_lst"] != []:
+                started_tournament_lst.append(tournament) 
+        return len(started_tournament_lst)
