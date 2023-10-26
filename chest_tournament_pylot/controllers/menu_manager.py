@@ -32,7 +32,7 @@ class MenuManager:
 
 
     def tournaments_manager(self):
-        
+        len_started_tournament = self.main_controller.tournament_manager.get_started_tournament_len()
         ascii_art = """
    ______          __  _                    __             __                               _     
   / ____/__  _____/ /_(_)___  ____     ____/ /__  _____   / /_____  __  ___________  ____  (_)____
@@ -43,7 +43,7 @@ class MenuManager:
 """    
         options = {
             "1": {"value": self.main_controller.tournament_manager.create_tournament, "text": "Creer un tournoi"},
-            "2": {"value": self.main_controller.tournament_manager.current_tournament, "text": "Reprendre le tournoi en cours"},
+            "2": {"value": self.main_controller.tournament_manager.current_tournament, "text": f"Tournoi en cours [{len_started_tournament}]"},
             "3": {"value": self.main_controller.tournament_manager.show_all_tournaments, "text": "Afficher tous les tournois"},
             "4": {"value": self.main_menu, "text": "Retour"}
         }

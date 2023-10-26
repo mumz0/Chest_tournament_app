@@ -1,1 +1,48 @@
-{"_default": {"1": {"name": "AA", "location": "A", "start_date": "", "description": "A", "end_date": null, "tournament_number": null, "round_number": 4, "players": [{"player_id": "1", "score": 13.5}, {"player_id": "2", "score": 7.5}, {"player_id": "3", "score": 10.5}, {"player_id": "4", "score": 10.5}, {"player_id": "5", "score": 5.5}, {"player_id": "6", "score": 5.0}, {"player_id": "7", "score": 8.5}, {"player_id": "9", "score": 3.0}], "round_lst": [{"number": "1", "start_timestamp": "12:54:50", "end_timestamp": null, "match_lst": [[{"player_id": "1", "result": 0.5}, {"player_id": "3", "result": 0.5}], [{"player_id": "4", "result": 1}, {"player_id": "2", "result": 0}], [{"player_id": "7", "result": 0.5}, {"player_id": "5", "result": 0.5}], [{"player_id": "6", "result": 0}, {"player_id": "9", "result": 1}]]}, {"number": "2", "start_timestamp": "12:54:57", "end_timestamp": null, "match_lst": [[{"player_id": "1", "result": 0}, {"player_id": "3", "result": 1}], [{"player_id": "4", "result": 0.5}, {"player_id": "2", "result": 0.5}], [{"player_id": "7", "result": 1}, {"player_id": "5", "result": 0}], [{"player_id": "6", "result": 0.5}, {"player_id": "9", "result": 0.5}]]}, {"number": "3", "start_timestamp": "13:02:44", "end_timestamp": null, "match_lst": [[{"player_id": "1", "result": 1}, {"player_id": "3", "result": 0}], [{"player_id": "4", "result": 1}, {"player_id": "2", "result": 0}], [{"player_id": "7", "result": 1}, {"player_id": "5", "result": 0}], [{"player_id": "6", "result": 0}, {"player_id": "9", "result": 1}]]}, {"number": "4", "start_timestamp": "13:02:46", "end_timestamp": null, "match_lst": [[{"player_id": "1", "result": 0.5}, {"player_id": "3", "result": 0.5}], [{"player_id": "4", "result": 0.5}, {"player_id": "2", "result": 0.5}], [{"player_id": "7", "result": 0.5}, {"player_id": "5", "result": 0.5}], [{"player_id": "6", "result": 1}, {"player_id": "9", "result": 0}]]}]}}}
+{
+    "_default": {
+        "1": {
+            "name": "AA",
+            "location": "A",
+            "start_date": "",
+            "description": "A",
+            "end_date": null,
+            "tournament_number": null,
+            "round_number": 4,
+            "players": [
+                {
+                    "player_id": "1",
+                    "score": 63.0
+                },
+                {
+                    "player_id": "2",
+                    "score": 63.0
+                },
+                {
+                    "player_id": "3",
+                    "score": 64.0
+                },
+                {
+                    "player_id": "4",
+                    "score": 64.5
+                },
+                {
+                    "player_id": "5",
+                    "score": 59.5
+                },
+                {
+                    "player_id": "6",
+                    "score": 48.0
+                },
+                {
+                    "player_id": "7",
+                    "score": 60.0
+                },
+                {
+                    "player_id": "9",
+                    "score": 54.0
+                }
+            ],
+            "round_lst": []
+        }
+    }
+}

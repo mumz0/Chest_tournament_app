@@ -1,3 +1,4 @@
+import datetime
 from chest_tournament_pylot.database_abstraction.models.database_helper import *
 from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
 
@@ -24,4 +25,6 @@ class TournamentHelper():
         return is_already_exist
     
 
-
+    def set_tournament_end_date(self):
+        date_now = datetime.datetime.now()
+        return date_now.strftime("%d:%M:%Y")
