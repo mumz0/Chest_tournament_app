@@ -1,57 +1,63 @@
-import json
-import os
-from tinydb import Query, TinyDB
-from chest_tournament_pylot.database_abstraction.models.tournament import Tournament
+class DatabaseHelper:
 
+    def save(obj, db):
+        db.insert(obj)
 
-def save(obj, db):
-    db.insert(obj)
+    def pull_database_obj_lst(db):
+        return db.all()
 
-def pull_database_obj_lst(db):
-    print(db.all())
-    return db.all()
-    
+    def pull_database_obj(id, db):
+        result = db.get(doc_id=id)
+        result.doc_id
+        return result
 
-def pull_database_obj(id, db):
-    result = db.get(doc_id = id)
-    result.doc_id
-    return result
+    def pull_database_lst(ids_lst, db):
+        objs_lst = []
+        for id in ids_lst:
+            result = db.get(doc_id=id)
+            objs_lst.append(result)
+        return objs_lst
 
-def update_obj(obj, db, attribute_value, attribute):
-    db.update(obj, attribute == attribute_value)
-
-
-# Fonction pour mettre à jour round_lst
-def update_tournament_round(tournament_id, round_serialized, db):
-   
-    tournament = db.get(doc_id = tournament_id)
-    if len(tournament['round_lst']) == 0:
+    # Fonction pour mettre à jour round_lst
+    def update_tournament_round(tournament_id, round_serialized, db):
+        table = db.table('_default')
+        tournament = table.get(doc_id=int(tournament_id))
         tournament['round_lst'].append(round_serialized)
-        db.update(tournament)
-    else:
-        for round in tournament['round_lst']:
-            round_found = False
-            if round['number'] == round_serialized['number']:
-                round_found = True
-        if round_found is False:
-            tournament['round_lst'].append(round_serialized)
-            db.update(tournament)
+        table.update({'round_lst': tournament['round_lst']}, doc_ids=[int(tournament.doc_id)])
 
+    # Fonction pour mettre à jour round_lst
+    def update_match_and_player_score(tournament_id, round_number, result_match, db):
+        table = db.table('_default')
+        tournament = table.get(doc_id=int(tournament_id))
 
+        for match in tournament['round_lst'][int(round_number) - 1]['match_lst']:
+            if match[0]["player_id"] == result_match[0]["player_id"] and match[1]["player_id"] == result_match[1]["player_id"]:
+                match[0]['result'] = result_match[0]['result']
+                match[1]['result'] = result_match[1]['result']
+        table.update({'round_lst': tournament['round_lst']}, doc_ids=[int(tournament.doc_id)])
 
-# Fonction pour mettre à jour round_lst
-def update_match_and_player_score(tournament_id, round_number, new_match_lst, db):
-    print('IN update_match_and_player_score')
-    print("tournament_id", tournament_id)
-    tournament = db.get(doc_id = tournament_id)
-    tournament['round_lst'][round_number - 1]['match_lst'] = new_match_lst
+        for player in tournament['players']:
+            if player['player_id'] == result_match[0]['player_id']:
+                player['score'] += result_match[0]['result']
 
-    for player in tournament['players']:
-        for match in new_match_lst:
-            if player['player_id'] == match[0]['player_id']:
-                player['score'] += match[0]['result']
-                break
-            if player['player_id'] == match[1]['player_id']:
-                player['score'] += match[1]['result']
-                break
-    db.update(tournament)
+            if player['player_id'] == result_match[1]['player_id']:
+                player['score'] += result_match[1]['result']
+
+        table.update({'players': tournament['players']}, doc_ids=[int(tournament.doc_id)])
+
+    def update_end_date_tournament(end_date, tournament_id, db):
+        table = db.table('_default')
+        tournament = table.get(doc_id=int(tournament_id))
+        tournament["end_date"] = end_date
+        table.update(tournament, doc_ids=[int(tournament.doc_id)])
+
+    def update_end_time_round(round_end_timestamp, round_number, tournament_id, db):
+        table = db.table('_default')
+        tournament = table.get(doc_id=int(tournament_id))
+        tournament['round_lst'][int(round_number) - 1]['end_timestamp'] = round_end_timestamp
+        db.table('_default').update({'round_lst': tournament['round_lst']}, doc_ids=[int(tournament.doc_id)])
+
+    def pull_tournament_attr(attr, tournament_id, db):
+        table = db.table('_default')
+        tournament = table.get(doc_id=int(tournament_id))
+        return tournament[attr]

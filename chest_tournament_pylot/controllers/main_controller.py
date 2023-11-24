@@ -5,7 +5,6 @@ from chest_tournament_pylot.controllers.tournament_manager import TournamentMana
 from chest_tournament_pylot.controllers.menu_manager import MenuManager
 
 
-
 class MainController:
 
     def __init__(self):
@@ -15,8 +14,5 @@ class MainController:
         self.tournament_db = TinyDB(os.getenv("TOURNAMENTS_DB_PATH"))
         self.player_db = TinyDB(os.getenv("PLAYERS_DB_PATH"))
 
-
     def run_app(self):
         self.menu_manager.main_menu()
-
-
