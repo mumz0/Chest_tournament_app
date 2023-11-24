@@ -7,7 +7,7 @@ class View:
         pass
 
     def display_options(self, options, ascii_art):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -21,7 +21,7 @@ class View:
         return self.display_options(options, ascii_art)
 
     def display_tournament_form(self, ascii_art):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -34,7 +34,7 @@ class View:
         return options_form_dict
 
     def display_tournaments_list(self, tournaments_list, ascii_art, back):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -51,7 +51,7 @@ class View:
             return self.display_tournaments_list(tournaments_list, ascii_art, back)
 
     def display_players_list(self, players, ascii_art, menu):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -69,7 +69,7 @@ class View:
             return self.display_players_list(players, ascii_art, menu)
 
     def display_tournament_ranks(self, players, ascii_art, back):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -83,7 +83,7 @@ class View:
         return input("Votre choix: ")
 
     def display_tournament_matches_history(self, round_lst, ascii_art, back):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -102,7 +102,7 @@ class View:
         return input("Votre choix: ")
 
     def display_player_form(self, ascii_art):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print("")
         print("")
@@ -117,7 +117,7 @@ class View:
         print(message)
 
     def display_result_match(self, index_round, player_obj_1, player_obj_2, ascii_art):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(ascii_art)
         print('ROUND ', index_round, ":")
         print("")
@@ -130,7 +130,7 @@ class View:
         return response
 
     def display_end_message(self):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("FERMETURE DE _CHEST PYLOT")
 
     def get_ascii_art(self, ascii_art_name_str):
