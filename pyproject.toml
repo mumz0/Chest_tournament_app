@@ -10,6 +10,7 @@ packages = [{include = "chest_tournament_app"}]
 python = "^3.11"
 tinydb = "^4.8.0"
 python-dotenv = "^1.0.0"
+flake8 = "^6.1.0"
 
 [build-system]
 requires = ["poetry-core"]
