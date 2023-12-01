@@ -23,7 +23,9 @@ class PlayerManager:
 
         for player in players_lst:
             options[str(player.doc_id)] = {
-                "first_name": player["first_name"], "last_name": player["last_name"], "birth_date": player["birth_date"]
+                "first_name": player["first_name"],
+                "last_name": player["last_name"],
+                "birth_date": player["birth_date"]
                 }
         response = self.view_obj.display_players_list(options, ascii_art, back)
         if response == "0":
@@ -62,7 +64,10 @@ class PlayerManager:
 
         if response != "0":
             Tournament_helper_obj = TournamentHelper()
-            Tournament_helper_obj.add_player_to_tournament(response, self.main_controller.player_db, int(tournament_id), self.main_controller.tournament_db)
+            Tournament_helper_obj.add_player_to_tournament(
+                response, self.main_controller.player_db,
+                int(tournament_id),
+                self.main_controller.tournament_db)
             self.main_controller.tournament_manager.tournament_management(tournament_id)
         else:
             options[response]["value"]()

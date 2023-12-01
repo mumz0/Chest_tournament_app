@@ -4,7 +4,18 @@ from tinydb import TinyDB
 
 class Tournament:
 
-    def __init__(self, name, location, start_date, description, tournament_number=None, end_date=None, rounds_number=4, players=[], round_lst=[]):
+    def __init__(
+            self,
+            name,
+            location,
+            start_date,
+            description,
+            tournament_number=None,
+            end_date=None,
+            rounds_number=4,
+            players=[],
+            round_lst=[]
+            ):
         self.name = name
         self.location = location
         self.start_date = start_date

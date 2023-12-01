@@ -39,7 +39,11 @@ class View:
         print("")
         print("")
         for index in tournaments_list:
-            print(index, tournaments_list[index]["name"], tournaments_list[index]["location"], tournaments_list[index]["date"])
+            print(
+                index, tournaments_list[index]["name"],
+                tournaments_list[index]["location"],
+                tournaments_list[index]["date"]
+                )
         for index in back:
             print(index, back[index]["text"])
         response = input("Votre choix: ")
@@ -92,11 +96,17 @@ class View:
             print("Round", round['round_number'])
             for match in round['match_lst']:
                 if match['score1'] == 1:
-                    print(f"{match['first_name1']} {match['last_name1']}  GAGNE CONTRE  {match['first_name2']} {match['last_name2']}")
+                    winner = f"{match['first_name1']} {match['last_name1']}"
+                    loser = f"{match['first_name2']} {match['last_name2']}"
+                    print(f"{winner}  GAGNE CONTRE  {loser}")
                 elif match['score1'] == 0:
-                    print(f"{match['first_name2']} {match['last_name2']}  GAGNE CONTRE  {match['first_name1']} {match['last_name1']}")
+                    winner = f"{match['first_name2']} {match['last_name2']}"
+                    loser = f"{match['first_name1']} {match['last_name1']}"
+                    print(f"{winner}  GAGNE CONTRE  {loser}")
                 else:
-                    print(f"{match['first_name1']} {match['last_name1']}  EGALITE CONTRE  {match['first_name2']} {match['last_name2']}")
+                    null_player_1 = f"{match['first_name1']} {match['last_name1']}"
+                    null_player_2 = f"{match['first_name2']} {match['last_name2']}"
+                    print(f"{null_player_1}  EGALITE CONTRE  {null_player_2}")
         print("")
         print(list(back.keys())[0], back["0"]["text"])
         return input("Votre choix: ")
