@@ -25,13 +25,18 @@ class MenuManager:
 
     def tournaments_manager(self):
         TournamentHelper_obj = TournamentHelper()
-        len_started_tournaments, len_tournaments_to_start, len_tournaments = TournamentHelper_obj.get_tournament_len("round_lst", self.main_controller.tournament_db)
+        len_started_tournaments, len_tournaments_to_start, len_tournaments = TournamentHelper_obj.get_tournament_len(
+            "round_lst", self.main_controller.tournament_db)
         ascii_art = self.view_obj.get_ascii_art("tournament_managment_title.txt")
         options = {
-            "1": {"value": self.main_controller.tournament_manager.create_tournament, "text": "Creer un tournoi"},
-            "2": {"value": self.main_controller.tournament_manager.current_tournament, "text": f"Tournois en cours [{len_started_tournaments}]"},
-            "3": {"value": self.main_controller.tournament_manager.show_tournaments_to_start, "text": f"Débuter un tournoi[{len_tournaments_to_start}]"},
-            "4": {"value": self.main_controller.tournament_manager.show_all_tournaments, "text": f"Afficher tous les tournois[{len_tournaments}]"},
+            "1": {"value": self.main_controller.tournament_manager.create_tournament,
+                  "text": "Creer un tournoi"},
+            "2": {"value": self.main_controller.tournament_manager.current_tournament,
+                  "text": f"Tournois en cours[{len_started_tournaments}]"},
+            "3": {"value": self.main_controller.tournament_manager.show_tournaments_to_start,
+                  "text": f"Débuter un tournoi[{len_tournaments_to_start}]"},
+            "4": {"value": self.main_controller.tournament_manager.show_all_tournaments,
+                  "text": f"Afficher tous les tournois[{len_tournaments}]"},
             "0": {"value": self.main_menu, "text": "Retour"}
         }
         response = self.view_obj.display_options(options, ascii_art)

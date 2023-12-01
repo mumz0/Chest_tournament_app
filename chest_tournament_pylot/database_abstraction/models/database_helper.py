@@ -31,7 +31,8 @@ class DatabaseHelper:
         tournament = table.get(doc_id=int(tournament_id))
 
         for match in tournament['round_lst'][int(round_number) - 1]['match_lst']:
-            if match[0]["player_id"] == result_match[0]["player_id"] and match[1]["player_id"] == result_match[1]["player_id"]:
+            if (match[0]["player_id"] == result_match[0]["player_id"] and
+                    match[1]["player_id"] == result_match[1]["player_id"]):
                 match[0]['result'] = result_match[0]['result']
                 match[1]['result'] = result_match[1]['result']
         table.update({'round_lst': tournament['round_lst']}, doc_ids=[int(tournament.doc_id)])

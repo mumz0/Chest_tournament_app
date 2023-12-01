@@ -32,11 +32,13 @@ class MatchHelper:
         for round in round_lst:
             try:
                 for match in round['match_lst']:
-                    if match[0]['player_id'] == player_1['player_id'] and player_2['player_id'] == match[1]['player_id']:
+                    if (match[0]['player_id'] == player_1['player_id'] and
+                            match[1]['player_id'] == player_2['player_id']):
                         is_already_played = True
                         return is_already_played
             except TypeError:
                 for match in round.match_lst:
-                    if match[0]['player_id'] == player_1['player_id'] and player_2['player_id'] == match[1]['player_id']:
+                    if (match[0]['player_id'] == player_1['player_id'] and
+                            player_2['player_id'] == match[1]['player_id']):
                         is_already_played = True
                         return is_already_played
