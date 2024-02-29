@@ -1,11 +1,11 @@
-# Download and install Poetry
-(Invoke-WebRequest -Uri https://install.python-poetry.org/ -UseBasicParsing).Content | py -
 
-# Add Path to PowerShell Profile
-Add-Content $PROFILE -Value 'Set-Variable -Name PATH -Value "%APPDATA%\pypoetry\venv\Scripts;$PATH"'
+if (-Not (Test-Path ./env)) {
+    python -m venv env
+    .\env\Scripts\activate
+    pip install -r requirements.txt
+} else {
+    .\env\Scripts\Activate.ps1
+}
 
-# Update Poetry Dependencies
-& (Join-Path $env:APPDATA "pypoetry\venv\Scripts\poetry") update
-
-# Run Python Script with Poetry
-& (Join-Path $env:APPDATA "pypoetry\venv\Scripts\poetry") run python ./main.py
+python "main.py"
+deactivate
