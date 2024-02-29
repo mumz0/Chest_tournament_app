@@ -103,10 +103,14 @@ class View:
                     winner = f"{match['first_name2']} {match['last_name2']}"
                     loser = f"{match['first_name1']} {match['last_name1']}"
                     print(f"{winner}  GAGNE CONTRE  {loser}")
-                else:
+                elif match['score1'] == 0.5:
                     null_player_1 = f"{match['first_name1']} {match['last_name1']}"
                     null_player_2 = f"{match['first_name2']} {match['last_name2']}"
                     print(f"{null_player_1}  EGALITE CONTRE  {null_player_2}")
+                else:
+                    null_player_1 = f"{match['first_name1']} {match['last_name1']}"
+                    null_player_2 = f"{match['first_name2']} {match['last_name2']}"
+                    print(f"{null_player_1}  VS  {null_player_2}")
         print("")
         print(list(back.keys())[0], back["0"]["text"])
         return input("Votre choix: ")
